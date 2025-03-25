@@ -1,29 +1,19 @@
-name: All Detections to Elastic
+name: All Detections To Elastic
 
 on:
   workflow_dispatch:
 
 jobs:
-  elastic-detection-all:
+  elastic-detections-all:
     runs-on: ubuntu-latest
     env:
       ELASTIC_KEY: ${{ secrets.ELASTIC_KEY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
-          fetch-depth: 0
-      # steps.changed-files.outputs.all_changed_files
-
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@823fcebdb31bb35fdf2229d9f769b400309430d0 # v46
-
-      - name: Run Update Script
-        env:
-          ELASTIC_KEY: ${{ secrets.ELASTIC_KEY }}
-          CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
-        run: |
-          pip install requests
-          python development/update_alert.py
+          python-version: '3.11.4'
+      - run: pip install requests
+      - run: python development/toml_to_json.py
 
 
