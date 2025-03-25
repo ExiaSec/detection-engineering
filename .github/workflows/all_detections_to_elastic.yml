@@ -10,6 +10,20 @@ jobs:
       ELASTIC_KEY: ${{ secrets.ELASTIC_KEY }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # steps.changed-files.outputs.all_changed_files
 
-      - run: python development/toml_to_json.py
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@823fcebdb31bb35fdf2229d9f769b400309430d0 # v46
+
+      - name: Run Update Script
+        env:
+          ELASTIC_KEY: ${{ secrets.ELASTIC_KEY }}
+          CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          pip install requests
+          python development/update_alert.py
+
 
