@@ -1,3 +1,6 @@
+[metadata]
+creation_date = "2025/03/25"
+
 [rule]
 author = ["Exia"]
 description = "This alert looks for zip files being sent over FTP."
